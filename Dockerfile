@@ -10,7 +10,8 @@ RUN dpkg --add-architecture i386 && \
     apt-get update -y && \
     apt-get install -y lib32stdc++6 lib32z1 && \
     apt-get install -y --no-install-recommends openjdk-8-jdk && \
-    apt-get install -y git wget zip curl
+    apt-get install -y git wget zip curl && \
+    apt-get install -y kvm qemu-kvm git
 
 RUN curl https://nodejs.org/dist/v10.13.0/node-v10.13.0-linux-x64.tar.gz | tar xz -C /usr/local/ --strip=1
 RUN npm i -g cordova
@@ -53,10 +54,13 @@ ADD license_accepter.sh /opt/
 RUN /opt/license_accepter.sh $ANDROID_HOME
 RUN echo y | /opt/android-sdk/tools/bin/sdkmanager "system-images;android-28;android-tv;x86"
 RUN echo y | /opt/android-sdk/tools/bin/sdkmanager "build-tools;28.0.0"
+#RUN echo y | /opt/android-sdk/tools/bin/sdkmanager "emulator"
 #RUN echo "no" | /opt/android-sdk/tools/bin/avdmanager create avd --package "system-images;android-28;android-tv;x86" --name "tv"
-RUN cordova create test && cd test && cordova platform add android && cordova build
+#RUN cordova create test && cd test && cordova platform add android && cordova build
+#ADD entrypoint.sh /entrypoint.sh
+#RUN chmod +x /entrypoint.sh
 
-ADD entrypoint.sh /entrypoint.sh
-RUN chmod +x /entrypoint.sh
+ADD kvm.sh /kvm.sh
+RUN chmod +x /kvm.sh
 
-CMD ["/entrypoint.sh"]
+CMD ["bash"]
