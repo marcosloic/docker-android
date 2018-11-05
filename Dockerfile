@@ -54,13 +54,16 @@ ADD license_accepter.sh /opt/
 RUN /opt/license_accepter.sh $ANDROID_HOME
 RUN echo y | /opt/android-sdk/tools/bin/sdkmanager "system-images;android-28;android-tv;x86"
 RUN echo y | /opt/android-sdk/tools/bin/sdkmanager "build-tools;28.0.0"
+
+#Removing emulator for now while I find a way to make hardware acceleration work on VM
 #RUN echo y | /opt/android-sdk/tools/bin/sdkmanager "emulator"
 #RUN echo "no" | /opt/android-sdk/tools/bin/avdmanager create avd --package "system-images;android-28;android-tv;x86" --name "tv"
+
 #RUN cordova create test && cd test && cordova platform add android && cordova build
 #ADD entrypoint.sh /entrypoint.sh
 #RUN chmod +x /entrypoint.sh
 
-ADD kvm.sh /kvm.sh
-RUN chmod +x /kvm.sh
+#ADD kvm.sh /kvm.sh
+#RUN chmod +x /kvm.sh
 
 CMD ["bash"]
